@@ -20,22 +20,16 @@ struct Trie *createTrie()
     return myTrie;
 }
 
-void insertRec(struct Trie* pTrie, char* word, int k, int len) {
-    if (k == len) {
-        pTrie->isWord += 1;
-        return;
-    }
-
-    int idx = word[k] - 'a';
-    if (pTrie->next[idx] == NULL) pTrie->next[idx] = createTrie();
-
-    insertRec(pTrie->next[idx], word, k+1, len);
-}
-
 // Inserts the word to the trie structure
 void insert(struct Trie *pTrie, char *word)
 {
-    insertRec(pTrie, word, 0, strlen(word));
+	int len = strlen(word);
+    for (int i = 0; i < len; i++) {
+		int idx = word[i] - 'a';
+		if (pTrie->next[idx] == NULL) pTrie->next[idx] = createTrie();
+		pTrie = pTrie->next[idx];
+	}
+	pTrie->isWord += 1;
 }
 
 // computes the number of occurances of the word
